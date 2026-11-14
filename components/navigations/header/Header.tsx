@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
@@ -9,25 +9,49 @@ import { marketingLinks } from "@/data/navigation";
 import { cn } from "@/lib/cn";
 import { appHref } from "@/lib/urls";
 
+const shell = "w-full px-5 sm:px-8 lg:px-12 xl:px-16";
+
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/80 backdrop-blur-md">
-      <div className="mx-auto flex h-[64px] max-w-6xl items-center justify-between px-5 sm:px-8">
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full border-b transition-[background-color,box-shadow,border-color] duration-300",
+        scrolled
+          ? "border-line bg-white/90 shadow-[0_10px_40px_rgba(21,62,56,0.06)] backdrop-blur-xl"
+          : "border-transparent bg-bg/70 backdrop-blur-md",
+      )}
+    >
+      <div className={cn(shell, "relative flex h-[68px] items-center gap-6 sm:h-[76px]")}>
         <Logo />
-        <nav className="hidden items-center gap-7 text-[13px] text-muted md:flex">
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
           {marketingLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-ink"
+              className="rounded-full px-3.5 py-2 text-[13px] font-medium text-muted transition-colors hover:bg-white hover:text-ink"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="ml-auto hidden items-center gap-2 md:flex">
           <MyButton href={appHref("/login")} variant="ghost" size="sm">
             Sign in
           </MyButton>
@@ -37,8 +61,9 @@ export function Header() {
         </div>
         <button
           type="button"
-          className="grid size-10 place-items-center rounded-full border border-line bg-white md:hidden"
+          className="ml-auto grid size-10 place-items-center rounded-full border border-line bg-white text-ink shadow-soft md:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
         >
           {open ? <X size={16} /> : <Menu size={16} />}
@@ -46,27 +71,27 @@ export function Header() {
       </div>
       <div
         className={cn(
-          "border-t border-line bg-white px-5 py-4 md:hidden",
+          "w-full border-t border-line bg-white md:hidden",
           open ? "block" : "hidden",
         )}
       >
-        <nav className="flex flex-col gap-3 text-[14px]">
+        <nav className={cn(shell, "flex flex-col py-3")}>
           {marketingLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-1 text-ink"
+              className="rounded-2xl px-3 py-3 text-[15px] font-medium text-ink transition-colors hover:bg-mint-0"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-        <div className="mt-4 flex gap-2">
-          <MyButton href={appHref("/login")} className="flex-1">
+        <div className={cn(shell, "grid grid-cols-2 gap-2 pb-5")}>
+          <MyButton href={appHref("/login")} className="w-full">
             Sign in
           </MyButton>
-          <MyButton href={appHref("/login")} variant="primary" className="flex-1">
+          <MyButton href={appHref("/login")} variant="primary" className="w-full">
             Open workspace
           </MyButton>
         </div>

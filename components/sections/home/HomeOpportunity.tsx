@@ -6,7 +6,7 @@ import { opportunity } from "@/data/home";
 
 export function HomeOpportunity() {
   return (
-    <section id="platform" className="border-y border-line bg-white px-5 py-20 sm:px-8">
+    <section id="platform" className="scroll-mt-24 border-y border-line bg-white px-5 py-20 sm:px-8">
       <div className="mx-auto max-w-6xl">
         <MyReveal>
           <MyHeading as="h2" eyebrow="02 / Commercial problem">

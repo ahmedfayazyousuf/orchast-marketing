@@ -8,7 +8,7 @@ import { appHref } from "@/lib/urls";
 
 export function HomeAgents() {
   return (
-    <section id="agents" className="px-5 py-20 sm:px-8">
+    <section id="agents" className="scroll-mt-24 px-5 py-20 sm:px-8">
       <div className="mx-auto max-w-6xl">
         <MyReveal>
           <MyHeading as="h2" eyebrow="04 / Agent ecosystem">

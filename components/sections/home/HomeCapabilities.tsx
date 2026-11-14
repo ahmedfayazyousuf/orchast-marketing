@@ -5,7 +5,7 @@ import { howItWorks } from "@/data/home";
 
 export function HomeCapabilities() {
   return (
-    <section id="capabilities" className="border-y border-line bg-white px-5 py-20 sm:px-8">
+    <section id="capabilities" className="scroll-mt-24 border-y border-line bg-white px-5 py-20 sm:px-8">
       <div className="mx-auto max-w-6xl">
         <MyReveal>
           <MyHeading as="h2" eyebrow="07 / From objective to outcome">
